@@ -437,6 +437,7 @@ compile_error! {
 mod macros;
 
 mod c_char;
+mod c_wchar_t;
 mod cxx_vector;
 mod exception;
 mod extern_type;

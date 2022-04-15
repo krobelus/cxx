@@ -211,7 +211,7 @@ fn pick_includes_and_builtins(out: &mut OutFile, apis: &[Api]) {
                 Some(Isize) => out.builtin.rust_isize = true,
                 Some(CxxString) => out.include.string = true,
                 Some(RustString) => out.builtin.rust_string = true,
-                Some(Bool) | Some(Char) | Some(F32) | Some(F64) | None => {}
+                Some(Bool) | Some(Char) | Some(F32) | Some(F64) | Some(Wchar) | None => {}
             },
             Type::RustBox(_) => out.builtin.rust_box = true,
             Type::RustVec(_) => out.builtin.rust_vec = true,
@@ -1314,6 +1314,7 @@ fn write_atom(out: &mut OutFile, atom: Atom) {
         I32 => write!(out, "::std::int32_t"),
         I64 => write!(out, "::std::int64_t"),
         Isize => write!(out, "::rust::isize"),
+        Wchar => write!(out, "wchar_t"),
         F32 => write!(out, "float"),
         F64 => write!(out, "double"),
         CxxString => write!(out, "::std::string"),
