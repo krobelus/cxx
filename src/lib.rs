@@ -462,6 +462,8 @@ mod unique_ptr;
 mod unwind;
 pub mod vector;
 mod weak_ptr;
+#[path = "cxx_wstring.rs"]
+mod wstring;
 
 pub use crate::cxx_vector::CxxVector;
 #[cfg(feature = "alloc")]
@@ -471,6 +473,7 @@ pub use crate::shared_ptr::SharedPtr;
 pub use crate::string::CxxString;
 pub use crate::unique_ptr::UniquePtr;
 pub use crate::weak_ptr::WeakPtr;
+pub use crate::wstring::CxxWString;
 pub use cxxbridge_macro::bridge;
 
 /// Synonym for `CxxString`.
@@ -479,6 +482,9 @@ pub use cxxbridge_macro::bridge;
 /// shouldn't import this type with `use`. Instead, write `cxx::String`, or
 /// import and use `CxxString`.
 pub type String = CxxString;
+
+/// Synonym for `CxxWString`.
+pub type WString = CxxWString;
 
 /// Synonym for `CxxVector`.
 ///
@@ -510,6 +516,7 @@ pub mod private {
     pub use crate::unique_ptr::UniquePtrTarget;
     pub use crate::unwind::prevent_unwind;
     pub use crate::weak_ptr::WeakPtrTarget;
+    pub use crate::wstring::StackWString;
     pub use core::{concat, module_path};
     pub use cxxbridge_macro::type_id;
 }

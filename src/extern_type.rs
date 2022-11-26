@@ -1,5 +1,6 @@
 use self::kind::{Kind, Opaque, Trivial};
 use crate::CxxString;
+use crate::CxxWString;
 #[cfg(feature = "alloc")]
 use alloc::string::String;
 
@@ -222,4 +223,7 @@ impl_extern_type! {
 
     [Opaque]
     CxxString = "std::string"
+
+    [Opaque]
+    CxxWString = "std::wstring"
 }

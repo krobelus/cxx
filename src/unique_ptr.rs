@@ -2,6 +2,7 @@ use crate::cxx_vector::{CxxVector, VectorElement};
 use crate::fmt::display;
 use crate::kind::Trivial;
 use crate::string::CxxString;
+use crate::wstring::CxxWString;
 use crate::ExternType;
 use core::ffi::c_void;
 use core::fmt::{self, Debug, Display};
@@ -242,6 +243,17 @@ extern "C" {
     fn unique_ptr_std_string_release(this: *mut MaybeUninit<*mut c_void>) -> *mut CxxString;
     #[link_name = "cxxbridge1$unique_ptr$std$string$drop"]
     fn unique_ptr_std_string_drop(this: *mut MaybeUninit<*mut c_void>);
+
+    #[link_name = "cxxbridge1$unique_ptr$std$wstring$null"]
+    fn unique_ptr_std_wstring_null(this: *mut MaybeUninit<*mut c_void>);
+    #[link_name = "cxxbridge1$unique_ptr$std$wstring$raw"]
+    fn unique_ptr_std_wstring_raw(this: *mut MaybeUninit<*mut c_void>, raw: *mut CxxWString);
+    #[link_name = "cxxbridge1$unique_ptr$std$wstring$get"]
+    fn unique_ptr_std_wstring_get(this: *const MaybeUninit<*mut c_void>) -> *const CxxWString;
+    #[link_name = "cxxbridge1$unique_ptr$std$wstring$release"]
+    fn unique_ptr_std_wstring_release(this: *mut MaybeUninit<*mut c_void>) -> *mut CxxWString;
+    #[link_name = "cxxbridge1$unique_ptr$std$wstring$drop"]
+    fn unique_ptr_std_wstring_drop(this: *mut MaybeUninit<*mut c_void>);
 }
 
 unsafe impl UniquePtrTarget for CxxString {
@@ -268,6 +280,33 @@ unsafe impl UniquePtrTarget for CxxString {
     }
     unsafe fn __drop(mut repr: MaybeUninit<*mut c_void>) {
         unsafe { unique_ptr_std_string_drop(&mut repr) }
+    }
+}
+
+unsafe impl UniquePtrTarget for CxxWString {
+    fn __typename(f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_str("CxxWString")
+    }
+    fn __null() -> MaybeUninit<*mut c_void> {
+        let mut repr = MaybeUninit::uninit();
+        unsafe {
+            unique_ptr_std_wstring_null(&mut repr);
+        }
+        repr
+    }
+    unsafe fn __raw(raw: *mut Self) -> MaybeUninit<*mut c_void> {
+        let mut repr = MaybeUninit::uninit();
+        unsafe { unique_ptr_std_wstring_raw(&mut repr, raw) }
+        repr
+    }
+    unsafe fn __get(repr: MaybeUninit<*mut c_void>) -> *const Self {
+        unsafe { unique_ptr_std_wstring_get(&repr) }
+    }
+    unsafe fn __release(mut repr: MaybeUninit<*mut c_void>) -> *mut Self {
+        unsafe { unique_ptr_std_wstring_release(&mut repr) }
+    }
+    unsafe fn __drop(mut repr: MaybeUninit<*mut c_void>) {
+        unsafe { unique_ptr_std_wstring_drop(&mut repr) }
     }
 }
 

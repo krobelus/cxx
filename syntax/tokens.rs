@@ -17,7 +17,7 @@ impl ToTokens for Type {
                 } else if ident.rust == Wchar {
                     let span = ident.rust.span();
                     tokens.extend(quote_spanned!(span=> ::libc::));
-                } else if ident.rust == CxxString {
+                } else if ident.rust == CxxString || ident.rust == CxxWString {
                     let span = ident.rust.span();
                     tokens.extend(quote_spanned!(span=> ::cxx::));
                 } else if ident.rust == RustString {

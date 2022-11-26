@@ -34,6 +34,42 @@ void cxxbridge1$cxx_string$push(std::string &s, const std::uint8_t *ptr,
   s.append(reinterpret_cast<const char *>(ptr), len);
 }
 
+void cxxbridge1$cxx_wstring$init(std::wstring *s, const std::uint32_t *ptr,
+                                 std::size_t len) noexcept {
+  new (s) std::wstring(reinterpret_cast<const wchar_t *>(ptr), len);
+}
+
+void cxxbridge1$cxx_wstring$destroy(std::wstring *s) noexcept {
+  using std::wstring;
+  s->~wstring();
+}
+
+const wchar_t *cxxbridge1$cxx_wstring$data(const std::wstring &s) noexcept {
+  return s.data();
+}
+
+std::size_t cxxbridge1$cxx_wstring$length(const std::wstring &s) noexcept {
+  return s.length();
+}
+
+void cxxbridge1$cxx_wstring$clear(std::wstring &s) noexcept { s.clear(); }
+
+void cxxbridge1$cxx_wstring$reserve_total(std::wstring &s,
+                                          size_t new_cap) noexcept {
+  s.reserve(new_cap);
+}
+
+void cxxbridge1$cxx_wstring$push(std::wstring &s, const wchar_t *ptr,
+                                 std::size_t len) noexcept {
+  s.append(ptr, len);
+}
+
+void *cxxbridge1$cxx_wstring$new(const wchar_t *ptr, std::size_t len) noexcept {
+  assert((len == 0 || ptr != nullptr) && "Null pointer with nonzero length");
+  return new std::wstring(ptr, len);
+}
+
+
 // rust::String
 void cxxbridge1$string$new(rust::String *self) noexcept;
 void cxxbridge1$string$clone(rust::String *self,
@@ -578,6 +614,27 @@ std::string *cxxbridge1$unique_ptr$std$string$release(
 }
 void cxxbridge1$unique_ptr$std$string$drop(
     std::unique_ptr<std::string> *ptr) noexcept {
+  ptr->~unique_ptr();
+}
+
+void cxxbridge1$unique_ptr$std$wstring$null(
+    std::unique_ptr<std::wstring> *ptr) noexcept {
+  new (ptr) std::unique_ptr<std::wstring>();
+}
+void cxxbridge1$unique_ptr$std$wstring$raw(std::unique_ptr<std::wstring> *ptr,
+                                           std::wstring *raw) noexcept {
+  new (ptr) std::unique_ptr<std::wstring>(raw);
+}
+const std::wstring *cxxbridge1$unique_ptr$std$wstring$get(
+    const std::unique_ptr<std::wstring> &ptr) noexcept {
+  return ptr.get();
+}
+std::wstring *cxxbridge1$unique_ptr$std$wstring$release(
+    std::unique_ptr<std::wstring> &ptr) noexcept {
+  return ptr.release();
+}
+void cxxbridge1$unique_ptr$std$wstring$drop(
+    std::unique_ptr<std::wstring> *ptr) noexcept {
   ptr->~unique_ptr();
 }
 } // extern "C"

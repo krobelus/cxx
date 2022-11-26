@@ -1,6 +1,7 @@
 use crate::fmt::display;
 use crate::kind::Trivial;
 use crate::string::CxxString;
+use crate::wstring::CxxWString;
 use crate::weak_ptr::{WeakPtr, WeakPtrTarget};
 use crate::ExternType;
 use core::ffi::c_void;
@@ -281,3 +282,4 @@ impl_shared_ptr_target_for_primitive!(f32);
 impl_shared_ptr_target_for_primitive!(f64);
 
 impl_shared_ptr_target!("string", "CxxString", CxxString);
+impl_shared_ptr_target!("string", "CxxWString", CxxWString);
