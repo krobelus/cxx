@@ -25,6 +25,7 @@ std = ["alloc"]
 [dependencies]
 cxxbridge-macro = { version = "=1.0.81", path = "macro" }
 link-cplusplus = "1.0"
+widestring = "1.0.2"
 
 [build-dependencies]
 cc = "1.0.49"

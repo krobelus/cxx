@@ -13,6 +13,8 @@ use core::pin::Pin;
 use core::slice;
 use core::str::{self};
 
+use widestring::{U32CStr, U32CString, Utf32Str, Utf32String};
+
 /// In C++, wchar_t may be signed or unsigned, but is in practice signed.
 /// In Rust UTF32String, its wchar_t is unsigned.
 /// Use unsigned to ease interop.
@@ -267,6 +269,26 @@ impl PartialEq<str> for CxxWString {
         other.chars().eq(self.as_char_iter())
     }
 }
+
+macro_rules! impl_partial_eq {
+    ($($ty:ty),*) => {
+        $(
+            impl PartialEq<$ty> for CxxWString {
+                fn eq(&self, other: &$ty) -> bool {
+                    self.as_wchars() == other.as_slice()
+                }
+            }
+
+            impl PartialEq<CxxWString> for $ty {
+                fn eq(&self, other: &CxxWString) -> bool {
+                    self.as_slice() == other.as_wchars()
+                }
+            }
+        )*
+    }
+}
+
+impl_partial_eq!(U32CStr, U32CString, Utf32Str, Utf32String);
 
 impl Eq for CxxWString {}
 
